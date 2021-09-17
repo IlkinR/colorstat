@@ -1,4 +1,3 @@
-import os
 from typing import Tuple
 
 from PIL import Image, ImageColor

@@ -1,6 +1,4 @@
 import io
-import string
-import re
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 from services import count_black_and_white, count_color
