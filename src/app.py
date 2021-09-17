@@ -1,7 +1,7 @@
 import io
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
-from services import count_black_and_white, count_color
+from colors import count_black_and_white, count_color
 
 api = FastAPI()
 
