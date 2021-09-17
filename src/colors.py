@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from PIL import Image, ImageColor
+from PIL import ImageColor
 import numpy as np
 
 WHITE_COLOR = (255, 255, 255)

@@ -1,7 +1,12 @@
 import io
+import re
+
 from fastapi import FastAPI, File, UploadFile
-from PIL import Image
+from PIL import Image, ImageColor
+
 from colors import count_black_and_white, count_color
+
+HEX_COLOR_PATTERN = re.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
 
 api = FastAPI()
 
@@ -23,12 +28,15 @@ def find_dominant_color(image: UploadFile = File(...)):
 
 @api.post("/count_color/")
 def get_color_count(searched_color: str, image: UploadFile = File(...)):
+    is_hex = re.search(HEX_COLOR_PATTERN, searched_color)
+    if is_hex is None:
+        return {"result": "fail", "reason": "Color should be heximal!"}
+
     image_extensions = (".png", ".jpg", ".jpeg", ".tiff", ".bmp", ".gif")
     if not image.filename.endswith(image_extensions):
-        return {"file": image.filename, "reason": "File should be image"}
+        return {"result": "fail", "reason": "File type must be image!"}
 
     image_bytes = io.BytesIO(image.file.read())
     image_file = Image.open(image_bytes).convert("RGB")
     color_count = int(count_color(image_file, searched_color))
-
     return {"color": searched_color, "count": color_count}
